@@ -114,7 +114,7 @@ export default function Upload() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 font-body" style={{ background: "var(--bg-dark)" }}>
         <div className="w-full max-w-sm card-glow p-8 rounded-3xl text-center">
-          <div className="font-display text-3xl font-bold gradient-text mb-2">ПУЛЬС</div>
+          <div className="font-display text-3xl font-bold gradient-text mb-2">ВОЛЬТ 73RUS</div>
           <div className="text-sm mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>Панель загрузки треков</div>
 
           <input

@@ -185,7 +185,7 @@ export default function Index() {
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
         style={{ background: "rgba(7,7,15,0.85)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-        <div className="font-display text-2xl font-bold tracking-widest gradient-text">ПУЛЬС</div>
+        <div className="font-display text-2xl font-bold tracking-widest gradient-text">ВОЛЬТ <span className="text-xs opacity-60">73RUS</span></div>
         <div className="flex gap-6 text-sm font-medium" style={{ color: "rgba(255,255,255,0.6)" }}>
           <button onClick={() => scrollTo("player")} className="hover:text-white transition-colors">Плеер</button>
           <button onClick={() => scrollTo("about")} className="hover:text-white transition-colors">О нас</button>
@@ -214,7 +214,8 @@ export default function Index() {
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-3xl w-full">
           <div className="fade-in-up fade-in-up-d1 mb-6">
-            <div className="font-display text-7xl md:text-9xl font-bold tracking-widest gradient-text leading-none">ПУЛЬС</div>
+            <div className="font-display text-7xl md:text-9xl font-bold tracking-widest gradient-text leading-none">ВОЛЬТ</div>
+            <div className="font-display text-2xl md:text-3xl font-light tracking-[0.3em] mt-1" style={{ color: "var(--neon-cyan)", opacity: 0.7 }}>73RUS</div>
             <div className="text-sm tracking-[0.5em] mt-2 uppercase" style={{ color: "rgba(255,255,255,0.4)" }}>Онлайн Радио</div>
           </div>
 
@@ -386,7 +387,7 @@ export default function Index() {
               <div className="text-3xl mb-4">📡</div>
               <div className="font-display text-xl font-semibold mb-3" style={{ color: "var(--neon-cyan)" }}>Наша миссия</div>
               <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                Радиостанция ПУЛЬС вещает 24 часа в сутки, 7 дней в неделю. Мы транслируем электронную музыку,
+                Радиостанция ВОЛЬТ 73RUS вещает 24 часа в сутки, 7 дней в неделю. Мы транслируем электронную музыку,
                 хаус, техно и экспериментальные жанры — живой звук без фильтров и компромиссов.
               </p>
             </div>
@@ -423,14 +424,50 @@ export default function Index() {
               <div className="bg-white rounded-xl p-3 inline-block mb-3">
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(window.location.origin)}&bgcolor=ffffff&color=0e0e1e&margin=0`}
-                  alt="QR-код радио ПУЛЬС"
+                  alt="QR-код ВОЛЬТ 73RUS"
                   width={180}
                   height={180}
                   className="block"
                 />
               </div>
-              <div className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <div className="text-xs mb-4" style={{ color: "rgba(255,255,255,0.4)" }}>
                 Наведи камеру на QR-код,<br />чтобы открыть радио на телефоне
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center">
+                <button
+                  onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.origin)}&text=${encodeURIComponent("Слушай ВОЛЬТ 73RUS — онлайн радио 🎧⚡")}`, "_blank")}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all hover:scale-105"
+                  style={{ background: "rgba(0,136,204,0.15)", border: "1px solid rgba(0,136,204,0.3)", color: "#0088cc" }}>
+                  <Icon name="Send" size={12} />
+                  Telegram
+                </button>
+                <button
+                  onClick={() => window.open(`https://vk.com/share.php?url=${encodeURIComponent(window.location.origin)}&title=${encodeURIComponent("ВОЛЬТ 73RUS — Онлайн Радио")}`, "_blank")}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all hover:scale-105"
+                  style={{ background: "rgba(77,131,195,0.15)", border: "1px solid rgba(77,131,195,0.3)", color: "#4d83c3" }}>
+                  <Icon name="Users" size={12} />
+                  ВКонтакте
+                </button>
+                <button
+                  onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent("Слушай ВОЛЬТ 73RUS — онлайн радио ⚡ " + window.location.origin)}`, "_blank")}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all hover:scale-105"
+                  style={{ background: "rgba(37,211,102,0.15)", border: "1px solid rgba(37,211,102,0.3)", color: "#25d366" }}>
+                  <Icon name="MessageCircle" size={12} />
+                  WhatsApp
+                </button>
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({ title: "ВОЛЬТ 73RUS", text: "Слушай онлайн радио ⚡", url: window.location.origin });
+                    } else {
+                      navigator.clipboard.writeText(window.location.origin);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-medium transition-all hover:scale-105"
+                  style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.6)" }}>
+                  <Icon name="Link" size={12} />
+                  Скопировать
+                </button>
               </div>
             </div>
           </div>
@@ -448,8 +485,8 @@ export default function Index() {
 
       {/* FOOTER */}
       <footer className="py-10 px-4 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div className="font-display text-lg font-bold tracking-widest gradient-text mb-2">ПУЛЬС</div>
-        <div className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>© 2025 Радио ПУЛЬС. Все права защищены.</div>
+        <div className="font-display text-lg font-bold tracking-widest gradient-text mb-2">ВОЛЬТ 73RUS</div>
+        <div className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>© 2025 ВОЛЬТ 73RUS. Все права защищены.</div>
       </footer>
     </div>
   );
