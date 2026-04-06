@@ -34,14 +34,49 @@ export default function Index() {
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const [shuffleEnabled, setShuffleEnabled] = useState(true);
+  const lastShuffleHour = useRef(-1);
   const currentTrack = tracks[currentIndex] || null;
+
+  const shuffleTracks = useCallback((list: Track[]) => {
+    const shuffled = [...list];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, []);
 
   useEffect(() => {
     fetch(API_TRACKS)
       .then(r => r.json())
-      .then(d => setTracks(d.tracks || []))
+      .then(d => {
+        const loaded = d.tracks || [];
+        setTracks(shuffleEnabled ? shuffleTracks(loaded) : loaded);
+        lastShuffleHour.current = new Date().getHours();
+      })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (!shuffleEnabled || tracks.length < 2) return;
+    const interval = setInterval(() => {
+      const currentHour = new Date().getHours();
+      if (currentHour !== lastShuffleHour.current) {
+        lastShuffleHour.current = currentHour;
+        setTracks(prev => {
+          const currentId = prev[currentIndex]?.id;
+          const shuffled = shuffleTracks(prev);
+          if (currentId) {
+            const newIdx = shuffled.findIndex(t => t.id === currentId);
+            if (newIdx >= 0) setCurrentIndex(newIdx);
+          }
+          return shuffled;
+        });
+      }
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, [shuffleEnabled, tracks.length, currentIndex, shuffleTracks]);
 
   useEffect(() => {
     if (!audioRef.current) {
@@ -255,11 +290,37 @@ export default function Index() {
               </button>
             </div>
 
-            {/* Volume */}
+            {/* Volume + Shuffle */}
             <div className="flex items-center gap-3">
               <Icon name="Volume2" size={16} style={{ color: "rgba(255,255,255,0.4)" }} />
               <input type="range" min={0} max={100} value={volume} onChange={e => setVolume(Number(e.target.value))} className="flex-1" />
               <span className="text-xs w-8 text-right" style={{ color: "rgba(255,255,255,0.4)" }}>{volume}%</span>
+            </div>
+            <div className="flex items-center justify-center mt-3">
+              <button
+                onClick={() => {
+                  setShuffleEnabled(prev => !prev);
+                  if (!shuffleEnabled) {
+                    setTracks(prev => {
+                      const currentId = prev[currentIndex]?.id;
+                      const shuffled = shuffleTracks(prev);
+                      if (currentId) {
+                        const newIdx = shuffled.findIndex(t => t.id === currentId);
+                        if (newIdx >= 0) setCurrentIndex(newIdx);
+                      }
+                      return shuffled;
+                    });
+                  }
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold transition-all"
+                style={{
+                  background: shuffleEnabled ? "rgba(0,245,255,0.15)" : "rgba(255,255,255,0.05)",
+                  border: shuffleEnabled ? "1px solid rgba(0,245,255,0.3)" : "1px solid rgba(255,255,255,0.1)",
+                  color: shuffleEnabled ? "var(--neon-cyan)" : "rgba(255,255,255,0.4)",
+                }}>
+                <Icon name="Shuffle" size={14} />
+                Авто-микс каждый час {shuffleEnabled ? "ВКЛ" : "ВЫКЛ"}
+              </button>
             </div>
           </div>
 
