@@ -413,7 +413,29 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="flex justify-center mt-16">
+          {/* QR Code */}
+          <div className="mt-16 flex flex-col items-center">
+            <div className="card-glow p-6 rounded-2xl text-center">
+              <div className="font-display text-lg font-semibold mb-3" style={{ color: "var(--neon-cyan)" }}>
+                <Icon name="QrCode" size={18} className="inline-block mr-2 align-middle" />
+                Поделись радио
+              </div>
+              <div className="bg-white rounded-xl p-3 inline-block mb-3">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(window.location.origin)}&bgcolor=ffffff&color=0e0e1e&margin=0`}
+                  alt="QR-код радио ПУЛЬС"
+                  width={180}
+                  height={180}
+                  className="block"
+                />
+              </div>
+              <div className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
+                Наведи камеру на QR-код,<br />чтобы открыть радио на телефоне
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-10">
             <button onClick={() => scrollTo("player")}
               className="glow-btn flex items-center gap-3 px-8 py-4 rounded-full font-display font-semibold tracking-widest text-white"
               style={{ background: "linear-gradient(135deg, var(--neon-pink), var(--neon-purple))" }}>
@@ -427,7 +449,7 @@ export default function Index() {
       {/* FOOTER */}
       <footer className="py-10 px-4 text-center" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div className="font-display text-lg font-bold tracking-widest gradient-text mb-2">ПУЛЬС</div>
-        <div className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>© 2024 Радио ПУЛЬС. Все права защищены.</div>
+        <div className="text-xs" style={{ color: "rgba(255,255,255,0.25)" }}>© 2025 Радио ПУЛЬС. Все права защищены.</div>
       </footer>
     </div>
   );
