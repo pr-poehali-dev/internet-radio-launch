@@ -1,0 +1,1 @@
+{"tests": [{"name": "OPTIONS preflight", "method": "OPTIONS", "path": "/", "expectedStatus": 200}, {"name": "Get tracks list", "method": "GET", "path": "/", "expectedStatus": 200, "expectedBody": {"tracks": "array"}, "bodyMatcher": "partial"}]}
